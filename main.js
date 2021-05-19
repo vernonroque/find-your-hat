@@ -8,19 +8,18 @@ const pathCharacter = '*';
 class Field{
     constructor(field){
         this._field = field;
-        this._horizPosition = 0;
-        this._vertPosition = 0;
+        this._horizPos = 0;
+        this._vertPos = 0;
         this._move = '';
         this._height= 0;
-         this._width = 0;
+        this._width = 0;
+        this._winner = false;
+        this._loser = false;
+        this._playAgainAnswer = '';
+       // this._dontPlayAgain = false;
+
     }
 
-    print() {
-        for(let i = 0; i<this._height; i++){
-                console.log(this._field[i].join(''));
-        }
-        
-    }
     playGame () {
         this._height = prompt('Choose height: ');
         this._width = prompt('Choose width: ');
@@ -82,49 +81,145 @@ class Field{
                 }
             }  
 
-            console.log(fieldArray);
-
+           
         this._field = fieldArray;
-        //this.print();  
-}
+        console.log(this._field);
+
+        this.print();  
+    }
+    print() {
+        for(let i = 0; i<this._height; i++){
+                console.log(this._field[i].join(''));
+        }
+        this.userInput();  
+    }
+    
     userInput() {
+        while(this._winner === false && this._loser === false){
         this._move = prompt('Which way?');
         this._move.toLowerCase();
         this.outOfBounds();
+        }
   
-
     }
     outOfBounds () {
           //testing for out of bounds
-        if (this._move ==='u' && this._vertPosition === 0)
-        console.log('not a valid move. game over.');
-        else if(this._move ==='l' && this._horizPosition === 0)
-        console.log('not a valid move. game over.');
-        else if(this._move==='d' && this._vertPosition === this._height)
-        console.log('not a valid move. game over.');
-        else if(this._move==='r' && this._vertPosition === this._width)
-        console.log('not a valid move. game over.');
+        if (this._move ==='u' && this._vertPos === 0){
+            this._loser = true;
+            console.log('not a valid move. game over.');
+            this.playAgain(); 
+        }
+            
+        else if(this._move ==='l' && this._horizPos === 0){
+            this._loser = true;
+            console.log('not a valid move. game over.');
+            this.playAgain(); 
+        }
+
+        else if(this._move==='d' && this._vertPos === this._height-1){
+            this._loser = true;
+            console.log('not a valid move. game over.');
+            this.playAgain(); 
+        }
+        else if(this._move==='r' && this._vertPos === this._width-1){
+            this._loser = true;
+            console.log('not a valid move. game over.');
+            this.playAgain(); 
+        }
+        else
+            this.validMove();
     }
+    validMove() {
 
-
-
-    moveUp () {
-        console.log('hello world');
+        if(this._move === 'd'){
+            this._vertPos++;
+            if(this._field[this._vertPos][this._horizPos]===fieldCharacter){
+                this._field[this._vertPos][this._horizPos] = pathCharacter;
+                this.print();
+            }
+            else if(this._field[this._vertPos][this._horizPos]=== hole){
+                this.fellInHole();
+            }  
+            else if(this._field[this._vertPos][this._horizPos]=== hat){
+                this.winner();
+            }
+        }
+        else if(this._move === 'r'){
+            this._horizPos++;
+            if(this._field[this._vertPos][this._horizPos]===fieldCharacter){
+                this._field[this._vertPos][this._horizPos] = pathCharacter;
+                this.print();
+            }
+            else if(this._field[this._vertPos][this._horizPos]=== hole){
+                this.fellInHole();
+            }  
+            else if(this._field[this._vertPos][this._horizPos]=== hat){
+                this.winner();
+            }
+        }
+        else if(this._move === 'l'){
+            this._horizPos--;
+            if(this._field[this._vertPos][this._horizPos]===fieldCharacter){
+                this._field[this._vertPos][this._horizPos] = pathCharacter;
+                this.print();
+            }
+            else if(this._field[this._vertPos][this._horizPos]=== hole){
+                this.fellInHole();
+            }  
+            else if(this._field[this._vertPos][this._horizPos]=== hat){
+                this.winner();
+            }
+        }
+        else if(this._move === 'u'){
+            if(this._vertPos>0){
+            this._vertPos--;
+            }
+            console.log("vert position is: " + this._vertPos + 'horiz position is: ' + this._horizPos); 
+            if(this._field[this._vertPos][this._horizPos]===fieldCharacter){
+                this._field[this._vertPos][this._horizPos] = pathCharacter;
+            }
+            else if(this._field[this._vertPos][this._horizPos]=== hole){
+                this.fellInHole();
+            }  
+            else if(this._field[this._vertPos][this._horizPos]=== hat){
+                this.winner();
+            }
+        }
 
     }
-    moveDown() {
+    fellInHole(){
+        this._loser = true;
+        console.log('You fell in the hole! Sorry you lost :(');
+        this.playAgain();
 
     }
-    moveLeft() {
-
+    winner(){
+        this._winner = true;
+        console.log('You found the hat! You are the winner :)');
+        this.playAgain();
     }
-    moveRight() {
-
+    playAgain(){
+        this._playAgainAnswer = prompt('Play again (y/n)?');
+            this._playAgainAnswer.toLowerCase();
+            if(this._playAgainAnswer ==='y'){
+                this._loser = false;
+                this._winner = false;
+                this._horizPos = 0;
+                this._vertPos = 0;
+                this.playGame();
+            }
+            else if(this._playAgainAnswer === 'n')
+            {
+                console.log('the answer is: ' + this._playAgainAnswer);
+                //this._dontPlayAgain = true;
+                console.log('Thanks for playing!');
+                //console.log('dont play again variable is' + this._dontPlayAgain);
+            }
     }
 
 }
 const myField = new Field;
  // myField.print();
   myField.playGame();
-  myField.print();
-  myField.userInput();
+ // myField.print();
+  //myField.userInput();
