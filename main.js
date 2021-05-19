@@ -97,31 +97,30 @@ class Field{
     userInput() {
         while(this._winner === false && this._loser === false){
         this._move = prompt('Which way?');
-        this._move.toLowerCase();
         this.outOfBounds();
         }
   
     }
     outOfBounds () {
           //testing for out of bounds
-        if (this._move ==='u' && this._vertPos === 0){
+        if (this._move.toLowerCase() ==='u' && this._vertPos === 0){
             this._loser = true;
             console.log('not a valid move. game over.');
             this.playAgain(); 
         }
             
-        else if(this._move ==='l' && this._horizPos === 0){
+        else if(this._move.toLowerCase() ==='l' && this._horizPos === 0){
             this._loser = true;
             console.log('not a valid move. game over.');
             this.playAgain(); 
         }
 
-        else if(this._move==='d' && this._vertPos === this._height-1){
+        else if(this._move.toLowerCase()==='d' && this._vertPos === this._height-1){
             this._loser = true;
             console.log('not a valid move. game over.');
             this.playAgain(); 
         }
-        else if(this._move==='r' && this._vertPos === this._width-1){
+        else if(this._move.toLowerCase()==='r' && this._horizPos === this._width-1){
             this._loser = true;
             console.log('not a valid move. game over.');
             this.playAgain(); 
