@@ -16,7 +16,6 @@ class Field{
         this._winner = false;
         this._loser = false;
         this._playAgainAnswer = '';
-       // this._dontPlayAgain = false;
 
     }
 
@@ -40,25 +39,23 @@ class Field{
         console.log('number of holes is ' + numOfHoles);
         let xPosHat = 0;
         let yPosHat = 0;
-        
+        //sets the child arrays within the parent array, fieldArray.
         for(let i = 0; i< this._height; i++){
             fieldArray.push([]);
             for(let b = 0; b <this._width;b++){
                 fieldArray[i].push(1);
             }
         };
-        //set position of path character
+        //sets position of path character
         fieldArray[0][0] = pathCharacter;
-        //find the position of hat
+        //sets the position of hat
         do{
             xPosHat= Math.floor(Math.random() * this._width);
             yPosHat= Math.floor(Math.random() * this._height);
             } while(xPosHat===0 && yPosHat===0);
-           // console.log( 'x position: ' + xPosHat + ' y position: ' + yPosHat);
             
-
         fieldArray[yPosHat][xPosHat] = hat;
-        //find the position of holes
+        //sets the position of holes
         for(let i = 0; i<Math.floor(numOfHoles); i++){
             console.log(`i counter is ${i}`);
             let xPos = 0;
@@ -66,14 +63,12 @@ class Field{
             do{
                 xPos= Math.floor(Math.random() * this._width);
                 yPos= Math.floor(Math.random() * this._height);
-                //console.log('y position of hole: ' + yPos + ' x position of hole: ' + xPos );
 
             } while(fieldArray[yPos][xPos]=== hat || fieldArray[yPos][xPos]===pathCharacter 
                 || fieldArray[yPos][xPos] === hole);
         fieldArray[yPos][xPos] = hole ;
-        console.log(`field array position: y pos is ${yPos} and x pos is ${xPos}`);
         }
-        //find the position of fieldCharacter
+        //sets the position of fieldCharacter
             for (let i = 0; i < this._height; i++){
                 for (let j = 0; j < this._width; j++){
                     if( fieldArray[i][j]===1)
@@ -83,7 +78,6 @@ class Field{
 
            
         this._field = fieldArray;
-        console.log(this._field);
 
         this.print();  
     }
@@ -128,8 +122,8 @@ class Field{
         else
             this.validMove();
     }
+    //checks if move lands on hat, hole, or field character
     validMove() {
-
         if(this._move === 'd'){
             this._vertPos++;
             if(this._field[this._vertPos][this._horizPos]===fieldCharacter){
@@ -186,17 +180,20 @@ class Field{
         }
 
     }
+    //response if user falls in hole
     fellInHole(){
         this._loser = true;
         console.log('You fell in the hole! Sorry you lost :(');
         this.playAgain();
 
     }
+    //response if user finds the hat
     winner(){
         this._winner = true;
         console.log('You found the hat! You are the winner :)');
         this.playAgain();
     }
+    //asks user if they want to play again
     playAgain(){
         this._playAgainAnswer = prompt('Play again (y/n)?');
             this._playAgainAnswer.toLowerCase();
@@ -210,9 +207,8 @@ class Field{
             else if(this._playAgainAnswer === 'n')
             {
                 console.log('the answer is: ' + this._playAgainAnswer);
-                //this._dontPlayAgain = true;
                 console.log('Thanks for playing!');
-                //console.log('dont play again variable is' + this._dontPlayAgain);
+                
             }
     }
 
